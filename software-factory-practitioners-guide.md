@@ -410,6 +410,10 @@ The agentic TUI is the human's primary interface to the factory — the tool thr
 
 The best way to learn factory-pattern development is to try it. The concepts in this guide are easier to internalize once you have run a factory loop end-to-end, even on a trivial service. Start small — a single-endpoint service with a handful of scenarios — and let the experience shape your understanding of where specifications need precision, where holdout scenarios catch genuine issues, and where the factory diverges from intent in ways that reveal specification gaps. No prescribed sequence can substitute for hands-on calibration.
 
+### Let your agents read this guide
+
+There is a markdown version of this paper available at [https://github.com/thewoolleyman/software-factory-practitioners-guide](https://github.com/thewoolleyman/software-factory-practitioners-guide). You can download it and feed it to your agents as context for them to understand how software factories work. It is licensed under the the [UNLICENSE](https://unlicense.org/). You may modify, update, or use it in any way that is useful to you and your agents.
+
 ### Notes on usage of Kilroy
 
 Most of the practical experience behind this guide came from a forked version of Kilroy [[13](#ref-13)], with several bug fixes applied (PRs submitted upstream). Kilroy was chosen because it was relatively feature-complete compared to other Attractor implementations and because it is written in Go — straightforward to patch and evolve when bugs or edge cases surfaced during real factory runs.
