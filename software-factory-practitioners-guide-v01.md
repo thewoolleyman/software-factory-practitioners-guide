@@ -6,6 +6,8 @@
 
 [https://www.thewoolleyweb.com/software-factory-practitioners-guide-v01.pdf](https://www.thewoolleyweb.com/software-factory-practitioners-guide-v01.pdf)
 
+[https://github.com/thewoolleyman/software-factory-practitioners-guide/blob/main/software-factory-practitioners-guide-v01.md](https://github.com/thewoolleyman/software-factory-practitioners-guide/blob/main/software-factory-practitioners-guide-v01.md)
+
 **Chad Woolley, thewoolleyman@gmail.com, February 2026**
 
 ---
