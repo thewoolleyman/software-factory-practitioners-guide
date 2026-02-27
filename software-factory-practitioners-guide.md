@@ -2,9 +2,11 @@
 
 **A reference for implementing factory-pattern development within an enterprise SOA.**
 
-[https://www.thewoolleyweb.com/software-factory-practitioners-guide.pdf](https://www.thewoolleyweb.com/software-factory-practitioners-guide.pdf)
+**Version: 1**
 
-**Chad Woolley, February 2026**
+[https://www.thewoolleyweb.com/software-factory-practitioners-guide.pdf](https://www.thewoolleyweb.com/software-factory-practitioners-guide-v01.pdf)
+
+**Chad Woolley, thewoolleyman@gmail.com, February 2026**
 
 ---
 
@@ -34,7 +36,9 @@ StrongDM has demonstrated that this approach works at a startup with a greenfiel
 
 This guide describes what _can_ be possible, and the direction software development is headed.
 
-It is based on the preliminary experience and explorations of one practitioner who is still early in the journey of implementing and using these approaches, but attempting to share what he has learned so far for the benefit of others navigating this era of rapid change and disruption.
+It is based on my preliminary experience and explorations, as one practitioner who is still early in the journey of implementing and using these approaches. I am attempting to share what I have learned so far for the benefit of others, as we all navigate this era of rapid change and disruption.
+
+Accordingly, this guide is has a version designation. We are all on a learning journey together, to understand how the ideas described in this guide can and should work in practice.
 
 ---
 
