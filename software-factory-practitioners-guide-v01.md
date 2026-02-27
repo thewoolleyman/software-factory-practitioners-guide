@@ -12,6 +12,68 @@
 
 ---
 
+## Table of Contents
+
+- [Executive Summary](#executive-summary)
+- [1. Overview and Scope](#1-overview-and-scope)
+  - [Reality Check: This Is an Aspirational Guide](#reality-check-this-is-an-aspirational-guide)
+- [2. Repository Layout](#2-repository-layout)
+  - [Example Layout](#example-layout)
+  - [Adapting the Layout](#adapting-the-layout)
+- [3. The Specification Layer](#3-the-specification-layer)
+  - [Intent Specifications (NLSpec)](#intent-specifications-nlspec)
+  - [Contracts](#contracts)
+  - [Constraints](#constraints)
+- [4. Scenarios as Holdout Validation](#4-scenarios-as-holdout-validation)
+  - [The Holdout Set Analogy](#the-holdout-set-analogy)
+  - [What Makes a Good Scenario](#what-makes-a-good-scenario)
+  - [Storing and Managing Holdout Scenarios](#storing-and-managing-holdout-scenarios)
+  - [The Scenario Authoring Problem](#the-scenario-authoring-problem)
+- [5. The Factory Development Loop](#5-the-factory-development-loop)
+  - [The Attractor Pattern](#the-attractor-pattern)
+  - [Provider-Aligned Agent Execution](#provider-aligned-agent-execution)
+  - [Convergence and the Digital Twin Universe](#convergence-and-the-digital-twin-universe)
+  - [The Satisfaction Metric](#the-satisfaction-metric)
+- [6. Production Observability and Specification Evolution](#6-production-observability-and-specification-evolution)
+  - [Three Categories of Production Signal](#three-categories-of-production-signal)
+  - [The Current State of Production -> Specification Feedback](#the-current-state-of-production---specification-feedback)
+  - [What a Production Feedback Loop Could Look Like](#what-a-production-feedback-loop-could-look-like)
+- [7. The Interactive/Non-Interactive Boundary](#7-the-interactivenon-interactive-boundary)
+  - [StrongDM's Shift Work Pattern](#strongdms-shift-work-pattern)
+  - [When Is the Specification Complete?](#when-is-the-specification-complete)
+  - [The Separate Agent Sets Architecture](#the-separate-agent-sets-architecture)
+  - [Industry Landscape](#industry-landscape)
+- [8. Evolving Specifications Over Time](#8-evolving-specifications-over-time)
+  - [Specification Versioning](#specification-versioning)
+  - [Patterns from Existing Systems](#patterns-from-existing-systems)
+  - [The Spec Amendment Workflow](#the-spec-amendment-workflow)
+- [9. SOA Boundary Coordination](#9-soa-boundary-coordination)
+  - [The Coordination Problem](#the-coordination-problem)
+  - [Out of Scope](#out-of-scope)
+- [10. Applicability Beyond SOA](#10-applicability-beyond-soa)
+- [11. Toolchain Summary](#11-toolchain-summary)
+  - [Specification Authoring](#specification-authoring)
+  - [Factory Orchestration](#factory-orchestration)
+  - [Context and State](#context-and-state)
+  - [Agent Identity](#agent-identity)
+  - [Skills and Capabilities](#skills-and-capabilities)
+  - [Agentic TUI](#agentic-tui)
+- [12. Getting Started](#12-getting-started)
+  - [Start experimenting](#start-experimenting)
+  - [Let your agents read this guide](#let-your-agents-read-this-guide)
+  - [Notes on usage of Kilroy](#notes-on-usage-of-kilroy)
+- [13. Out of Scope](#13-out-of-scope)
+- [14. Open Questions](#14-open-questions)
+  - [Specification Completeness and Validation](#specification-completeness-and-validation)
+  - [Production Signals and Specification Evolution](#production-signals-and-specification-evolution)
+  - [Scaling to Complex Services](#scaling-to-complex-services)
+  - [Enterprise Integration and Auditability](#enterprise-integration-and-auditability)
+  - [Generated Code as Artifact](#generated-code-as-artifact)
+- [15. Closing Perspective](#15-closing-perspective)
+  - [What's next?](#whats-next)
+- [References and Further Reading](#references-and-further-reading)
+- [Appendix: A Personal Note](#appendix-a-personal-note)
+
 ## Executive Summary
 
 The software factory pattern represents a fundamental shift in how software is built: humans write specifications, coding agents produce the implementation, and a separate validation process verifies correctness — without human code review. In Dan Shapiro's five-level taxonomy [[2](#ref-2)], this is the Level 4-to-5 transition — from human-as-engineering-manager to "dark factory." This guide describes the emerging mechanics for implementing that pattern within an enterprise service-oriented architecture — what is known, what is working, and what remains unsolved.
@@ -31,7 +93,6 @@ The software factory pattern represents a fundamental shift in how software is b
 ---
 
 ## 1. Overview and Scope
-
 You have a greenfield service to build within an existing enterprise service-oriented architecture, and you want to build it using the software factory pattern — where human-authored specifications drive coding agents that produce, test, and converge working software without human code review.
 
 The factory pattern has moved from theoretical to operational. StrongDM's AI team [[1](#ref-1)] published the first detailed public account of a production software factory in February 2026. A three-person team produced security infrastructure — access management software controlling permissions across Okta, Jira, Slack, and Google Workspace — under two foundational rules: no human writes code, and no human reviews code. The humans design specifications, curate validation scenarios, and monitor satisfaction scores. The agents do everything else.
@@ -63,7 +124,6 @@ This guide has a version designation, and will evolve as the community's collect
 ---
 
 ## 2. Repository Layout
-
 ### Example Layout
 
 The repository structure encodes a fundamental distinction: what humans manage (often with AI assistance) versus what machines produce autonomously. Everything under `spec/`, `holdout-scenarios/`, `factory/`, and `docs/` is human-managed — authored or curated by the context/intent engineer, possibly with agent assistance during interactive sessions. Everything under `src/` is machine-generated, version-controlled, but treated as opaque output whose correctness is verified exclusively through externally observable behavior.
@@ -88,7 +148,7 @@ example-service/
 
 **`spec/constraints/`** — **Constraints.** Holds what GitHub's Spec Kit [[5](#ref-5)] calls the "constitution" — immutable principles that apply to every change. SLO targets, security requirements, and operational constraints live here. Unlike intent, which evolves as understanding deepens, constraints tend to be stable and non-negotiable. An SLO of p99 latency under 200ms is not a suggestion the agent can reinterpret; it is a hard boundary.
 
-**`holdout-scenarios/`** — **Validation.** Stored outside the main codebase accessible to factory agents. The separation mechanism can be sparse checkout rules, a separate repository with restricted access, or an external system. The critical property: factory agents during implementation never see these scenarios. They function as a holdout set in the machine learning sense, preventing agents from overfitting their implementation to the test data. More on this in Section 4.
+**`holdout-scenarios/`** — **Validation.** Stored outside the main codebase accessible to factory agents. The separation mechanism can be sparse checkout rules, a separate repository with restricted access, or an external system. The critical property: factory agents during implementation never see these scenarios. They function as a holdout set in the machine learning sense, preventing agents from overfitting their implementation to the test data. More on this in [Section 4](#4-scenarios-as-holdout-validation).
 
 **`factory/`** — **Orchestration.** Contains the Attractor phase graph (a DOT file defining the generative SDLC) and its configuration. The phase graph is the factory's "program" — it defines what phases the coding agents traverse, what prompts govern each phase, and what convergence criteria determine when the software is ready. Human-authored, version-controlled.
 
@@ -100,14 +160,13 @@ example-service/
 
 The example layout above is illustrative, not prescriptive. The actual structure of your specification, holdout scenarios, and supporting context will vary across projects, teams, and planning processes. A team building a data pipeline may organize intent around transformation stages rather than user journeys. A team with an existing test harness may store holdout scenarios in a separate repository rather than a sibling directory.
 
-What the layout does express is the fundamental divide at the heart of the factory pattern: work that humans manage (often with AI assistance) versus work that machines perform autonomously. StrongDM calls this "shift work" (explored in detail in Section 7) — the interactive shift where humans and agents collaborate on specification and scenarios, and the non-interactive shift where the factory generates code without human involvement. The directories above fall on one side or the other. `spec/`, `holdout-scenarios/`, `factory/`, and `docs/` are all human-managed outputs of the interactive shift. `src/` is the output of the non-interactive shift. `factory/` bridges the two — human-authored, but it defines how the non-interactive shift runs. The example layout was chosen to make this divide concrete so that the rest of this guide can reference it clearly.
+What the layout does express is the fundamental divide at the heart of the factory pattern: work that humans manage (often with AI assistance) versus work that machines perform autonomously. StrongDM calls this "shift work" (explored in detail in [Section 7](#7-the-interactivenon-interactive-boundary)) — the interactive shift where humans and agents collaborate on specification and scenarios, and the non-interactive shift where the factory generates code without human involvement. The directories above fall on one side or the other. `spec/`, `holdout-scenarios/`, `factory/`, and `docs/` are all human-managed outputs of the interactive shift. `src/` is the output of the non-interactive shift. `factory/` bridges the two — human-authored, but it defines how the non-interactive shift runs. The example layout was chosen to make this divide concrete so that the rest of this guide can reference it clearly.
 
 **A note on the single human role.** In this model, there is one human function: the context/intent engineer. This person (or small team) authors specifications, writes scenarios, configures the factory, and monitors production signals. They do not write code. They do not review code. Their intellectual contribution is upstream of implementation — defining what should exist and how to verify it exists correctly.
 
 ---
 
 ## 3. The Specification Layer
-
 The specification layer is the factory's primary input and the human's primary artifact. Getting specifications right is where the hard intellectual work lives. As GitHub's Spec Kit documentation puts it: "The lingua franca of development moves to a higher level, and code is the last-mile approach."
 
 ### Intent Specifications (NLSpec)
@@ -137,7 +196,6 @@ A well-written constraint is measurable. "The service should be fast" is not a c
 ---
 
 ## 4. Scenarios as Holdout Validation
-
 The scenario holdout mechanism is the most important innovation in the factory pattern, and it emerged from a painful discovery. When StrongDM's team began building software with coding agents, they hit the classic reward-hacking problem: agents tasked with making tests pass would write `return true`. Perfectly rational strategy for passing a narrowly written test. Produces useless software.
 
 Traditional testing approaches — unit tests, integration tests, end-to-end tests — all share a vulnerability when agents write both the implementation and the tests: the agent can optimize for the test rather than for the intended behavior. This is not hypothetical. It happened repeatedly in StrongDM's early experiments. Tests that lived inside the codebase, visible to the coding agents, became targets for optimization rather than genuine quality signals.
@@ -179,7 +237,6 @@ The concrete mechanics of this separation are still being worked out. StrongDM h
 ---
 
 ## 5. The Factory Development Loop
-
 The factory development loop is the core engine that transforms specifications into working software. At its heart is the Attractor pattern — a graph-structured pipeline that orchestrates coding agents through phases of implementation, testing, and refinement until the software converges on a state that satisfies all specifications and passes holdout validation.
 
 ### The Attractor Pattern
@@ -249,7 +306,6 @@ The satisfaction metric is computed by a separate validation agent (or agent set
 ---
 
 ## 6. Production Observability and Specification Evolution
-
 What happens after the factory produces software and that software runs in production? How do production signals flow back to influence specifications? This is the least-solved problem in the factory pattern, and we present it as frontier territory rather than settled practice.
 
 ### Three Categories of Production Signal
@@ -287,8 +343,7 @@ Signal Type C (satisfaction regression) requires instrumentation beyond traditio
 ---
 
 ## 7. The Interactive/Non-Interactive Boundary
-
-Section 2 introduced the shift work divide — the distinction between human-managed interactive work and autonomous factory execution — as the organizing principle behind the repository layout. This section examines that boundary in depth, because where exactly interactive collaboration ends and autonomous execution begins is the central unsolved problem in factory-pattern development. We do not have a definitive answer. What we offer is a landscape of approaches, a concrete framing from StrongDM, and honest identification of the gaps.
+[Section 2](#2-repository-layout) introduced the shift work divide — the distinction between human-managed interactive work and autonomous factory execution — as the organizing principle behind the repository layout. This section examines that boundary in depth, because where exactly interactive collaboration ends and autonomous execution begins is the central unsolved problem in factory-pattern development. We do not have a definitive answer. What we offer is a landscape of approaches, a concrete framing from StrongDM, and honest identification of the gaps.
 
 ### StrongDM's Shift Work Pattern
 
@@ -343,7 +398,6 @@ None of these systems fully solves the interactive/non-interactive boundary. The
 ---
 
 ## 8. Evolving Specifications Over Time
-
 Specifications are living documents. As the service operates in production, encounters new usage patterns, and integrates with evolving SOA neighbors, the specifications must evolve.
 
 ### Specification Versioning
@@ -364,14 +418,13 @@ A specification change may cascade. Amending intent may invalidate existing scen
 
 ### The Spec Amendment Workflow
 
-When a specification needs to change (triggered by production signal, new requirements, or contract evolution), the process returns to the interactive shift. The specification engineer identifies the change needed, often informed by production signals (Section 6) or evolving business requirements. Spec-refinement agents assist in drafting the amendment, checking consistency with existing specifications, identifying cascade effects. New holdout scenarios are authored (or existing ones updated) to validate the changed behavior. The specification change is committed and the factory re-runs. The non-interactive shift produces a new build. Holdout validation verifies the new build satisfies both changed scenarios and all existing ones (regression protection).
+When a specification needs to change (triggered by production signal, new requirements, or contract evolution), the process returns to the interactive shift. The specification engineer identifies the change needed, often informed by production signals ([Section 6](#6-production-observability-and-specification-evolution)) or evolving business requirements. Spec-refinement agents assist in drafting the amendment, checking consistency with existing specifications, identifying cascade effects. New holdout scenarios are authored (or existing ones updated) to validate the changed behavior. The specification change is committed and the factory re-runs. The non-interactive shift produces a new build. Holdout validation verifies the new build satisfies both changed scenarios and all existing ones (regression protection).
 
 This cycle — observe, amend, rebuild, validate — is the heartbeat of an evolving factory-built service. Its cadence depends on the service's rate of change and the organization's tolerance for specification drift.
 
 ---
 
 ## 9. SOA Boundary Coordination
-
 This guide focuses on building a single service. But that service exists within an SOA, and its contracts connect it to neighboring services.
 
 ### The Coordination Problem
@@ -391,7 +444,6 @@ The `spec/contracts/` directory captures contracts as they exist today. When ups
 ---
 
 ## 10. Applicability Beyond SOA
-
 While this guide targets services within an enterprise SOA, the factory pattern applies more broadly. The core mechanics — specification as primary artifact, holdout scenario validation, graph-structured agent orchestration, satisfaction-based convergence — are domain-independent.
 
 **Libraries and frameworks** can be factory-built by replacing API contracts with public interface specifications and using consumer codebases (or synthetic consumers) for validation. Holdout scenarios become usage examples the library must satisfy.
@@ -405,7 +457,6 @@ The common thread: humans specify intent and validation criteria, the factory pr
 ---
 
 ## 11. Toolchain Summary
-
 This section maps the abstract concepts to concrete tools. The landscape evolves rapidly; treat this as a snapshot of early 2026 rather than a permanent recommendation.
 
 ### Specification Authoring
@@ -437,7 +488,6 @@ The agentic TUI is the human's primary interface to the factory — the tool thr
 ---
 
 ## 12. Getting Started
-
 ### Start experimenting
 
 The best way to learn factory-pattern development is to try it. The concepts in this guide are easier to internalize once you have run a factory loop end-to-end, even on a trivial service. Start small — a single-endpoint service with a handful of scenarios — and let the experience shape your understanding of where specifications need precision, where holdout scenarios catch genuine issues, and where the factory diverges from intent in ways that reveal specification gaps. No prescribed sequence can substitute for hands-on calibration.
@@ -500,14 +550,13 @@ The YAML DSL and support skills may eventually be released as open source, likel
 ---
 
 ## 13. Out of Scope
-
 This guide focuses on the factory mechanics: turning human intent into working, deployed software for a single service. Several important concerns are acknowledged here as real, critical, and required for enterprise adoption — but separate from the core factory pattern.
 
 **Governance and auditability.** Who approves specification changes? What audit trail is required for factory-produced code? How do you satisfy SOC 2, HIPAA, or other compliance frameworks when no human reviews the code? The Stanford Law School's analysis [[14](#ref-14)], published two days after StrongDM's announcement, frames this sharply: "When a customer asks 'how was this software built?' the truthful answer is: 'Coding agents wrote it. Other agents tested it against replicas of your services.'" Existing software liability frameworks assume human involvement in code production. Factory-built software challenges that assumption. This guide does not address how to navigate it.
 
 **Agent security and scope.** Factory agents operate with access to source code, build systems, and potentially production infrastructure. What permissions should they have? How do you prevent a misbehaving agent from exfiltrating secrets, corrupting data, or deploying a bad build? Agent sandboxing, credential scoping, and blast radius limitation are critical. StrongDM ID's path-scoped sharing model is one approach, but agent security architecture deserves its own treatment.
 
-**SOA boundary coordination at scale.** As discussed in Section 9, propagating contract changes across multiple factory-built services is unsolved. Organizations with dozens or hundreds of services need governance and automation beyond this guide's single-service scope.
+**SOA boundary coordination at scale.** As discussed in [Section 9](#9-soa-boundary-coordination), propagating contract changes across multiple factory-built services is unsolved. Organizations with dozens or hundreds of services need governance and automation beyond this guide's single-service scope.
 
 **Organizational transformation.** Adopting the factory pattern changes what it means to be a software engineer. The skill profile shifts from code production to specification authoring, scenario design, and system thinking. The Stanford Law analysis notes: "The skill of reading and writing code, the bedrock of software engineering for seventy years, becomes unnecessary" in a full dark factory. How organizations manage this transition — retraining, role redefinition, hiring, career ladders — is a significant challenge this guide does not address.
 
@@ -518,7 +567,6 @@ This guide focuses on the factory mechanics: turning human intent into working, 
 ---
 
 ## 14. Open Questions
-
 The factory pattern is new enough that fundamental questions remain open. These have been referenced inline and are consolidated here.
 
 ### Specification Completeness and Validation
@@ -531,7 +579,7 @@ The factory pattern is new enough that fundamental questions remain open. These 
 
 ### Production Signals and Specification Evolution
 
-**How do production signals become specification amendments?** Section 6 sketched three signal categories and a triage layer, but no existing system implements this end-to-end. The gap between "SRE detects anomaly" and "specification engineer amends intent" is bridged by human judgment. Whether and how that gap can be narrowed through automation is the most important open research question for factory-pattern systems.
+**How do production signals become specification amendments?** [Section 6](#6-production-observability-and-specification-evolution) sketched three signal categories and a triage layer, but no existing system implements this end-to-end. The gap between "SRE detects anomaly" and "specification engineer amends intent" is bridged by human judgment. Whether and how that gap can be narrowed through automation is the most important open research question for factory-pattern systems.
 
 ### Scaling to Complex Services
 
@@ -558,14 +606,13 @@ The specification commit history provides some provenance — you can trace the 
 ---
 
 ## 15. Closing Perspective
-
 ### What's next?
 
 Everything in this guide is a snapshot of a field changing at extraordinary pace. The tools, frameworks, and implementations referenced here represent what was available as of early 2026. Many will be superseded, forked, rewritten, or abandoned within months. New entrants will appear addressing the same goals with different architectures and tradeoffs. Normal for a domain this young.
 
 Kilroy was chosen for the practical work behind this guide because it was relatively complete and easy to patch when it wasn't. It does not have to be used. The Attractor itself is a specification — an NLSpec published on GitHub describing what a non-interactive coding agent should do, not how any particular implementation must do it. Anyone can implement their own factory orchestration from that specification, adapt it, or build something better. The specification is the contribution; the implementation is replaceable. Fittingly, that is the same principle the factory pattern applies to software itself.
 
-The out-of-scope items in Section 13 — governance, agent security, cross-service coordination, organizational transformation, cost management — are not minor footnotes. They are hard problems that will determine whether the factory pattern moves from early-adopter experimentation to mainstream enterprise practice. The open questions in Section 14 are equally real. This guide does not pretend to have answers. It offers a framework for thinking about them, grounded in the published experience of teams that have built real software this way.
+The out-of-scope items in [Section 13](#13-out-of-scope) — governance, agent security, cross-service coordination, organizational transformation, cost management — are not minor footnotes. They are hard problems that will determine whether the factory pattern moves from early-adopter experimentation to mainstream enterprise practice. The open questions in [Section 14](#14-open-questions) are equally real. This guide does not pretend to have answers. It offers a framework for thinking about them, grounded in the published experience of teams that have built real software this way.
 
 The deeper point is not about any particular tool or technique. The trajectory of software development is moving toward specification-driven, agent-executed production. The economics are compelling: if a specification can drive agents to produce correct, validated software faster and cheaper than human implementation, the industry will adopt it — unevenly, reluctantly in some quarters, but inevitably. The skill that matters is not mastering today's toolchain. It is learning to think in specifications, to express intent precisely enough that machines can act on it, and to design validation systems rigorous enough to trust the output. Those skills transfer across whatever tools come next.
 
@@ -573,39 +620,39 @@ The deeper point is not about any particular tool or technique. The trajectory o
 
 ## References and Further Reading
 
-<a id="ref-1"></a>[[1]]{#ref-1} **StrongDM Software Factory.** [factory.strongdm.ai](https://factory.strongdm.ai) — The primary reference for factory-pattern development, including principles, techniques (shift work, gene transfusion, DTU, pyramid summaries), and products (Attractor, CXDB, StrongDM ID). The shift work technique is documented at [factory.strongdm.ai/techniques/shift-work](https://factory.strongdm.ai/techniques/shift-work).
+<a id="ref-1"></a>[1] **StrongDM Software Factory.** [factory.strongdm.ai](https://factory.strongdm.ai) — The primary reference for factory-pattern development, including principles, techniques (shift work, gene transfusion, DTU, pyramid summaries), and products (Attractor, CXDB, StrongDM ID). The shift work technique is documented at [factory.strongdm.ai/techniques/shift-work](https://factory.strongdm.ai/techniques/shift-work).
 
-<a id="ref-2"></a>[[2]]{#ref-2} **Dan Shapiro, "The Five Levels: from Spicy Autocomplete to the Dark Factory."** [danshapiro.com/blog/2026/01/the-five-levels-from-spicy-autocomplete-to-the-software-factory](https://www.danshapiro.com/blog/2026/01/the-five-levels-from-spicy-autocomplete-to-the-software-factory/), January 2026 — The five-level taxonomy of AI-assisted programming.
+<a id="ref-2"></a>[2] **Dan Shapiro, "The Five Levels: from Spicy Autocomplete to the Dark Factory."** [danshapiro.com/blog/2026/01/the-five-levels-from-spicy-autocomplete-to-the-software-factory](https://www.danshapiro.com/blog/2026/01/the-five-levels-from-spicy-autocomplete-to-the-software-factory/), January 2026 — The five-level taxonomy of AI-assisted programming.
 
-<a id="ref-3"></a>[[3]]{#ref-3} **8090 Software Factory.** [8090.ai/docs/general/introduction](https://www.8090.ai/docs/general/introduction) — AI-native SDLC platform with Refinery (requirements), Foundry (blueprints), Planner (work orders), and Validator (feedback loop) modules.
+<a id="ref-3"></a>[3] **8090 Software Factory.** [8090.ai/docs/general/introduction](https://www.8090.ai/docs/general/introduction) — AI-native SDLC platform with Refinery (requirements), Foundry (blueprints), Planner (work orders), and Validator (feedback loop) modules.
 
-<a id="ref-4"></a>[[4]]{#ref-4} **Jesse Vincent, Superpowers.** [github.com/obra/superpowers](https://github.com/obra/superpowers) — Agentic skills framework implementing mandatory brainstorm -> plan -> implement workflow with DOT graph experimentation.
+<a id="ref-4"></a>[4] **Jesse Vincent, Superpowers.** [github.com/obra/superpowers](https://github.com/obra/superpowers) — Agentic skills framework implementing mandatory brainstorm -> plan -> implement workflow with DOT graph experimentation.
 
-<a id="ref-5"></a>[[5]]{#ref-5} **GitHub Spec Kit.** [github.com/github/spec-kit](https://github.com/github/spec-kit) — Open-source toolkit for specification-driven development, including the Spec-Driven Development methodology document.
+<a id="ref-5"></a>[5] **GitHub Spec Kit.** [github.com/github/spec-kit](https://github.com/github/spec-kit) — Open-source toolkit for specification-driven development, including the Spec-Driven Development methodology document.
 
-<a id="ref-6"></a>[[6]]{#ref-6} **Sandgarden (sgai).** [github.com/sandgardenhq/sgai](https://github.com/sandgardenhq/sgai) — Goal-based development framework where specifications are the contribution artifact and source code is treated as generated output.
+<a id="ref-6"></a>[6] **Sandgarden (sgai).** [github.com/sandgardenhq/sgai](https://github.com/sandgardenhq/sgai) — Goal-based development framework where specifications are the contribution artifact and source code is treated as generated output.
 
-<a id="ref-7"></a>[[7]]{#ref-7} **Simon Willison, "How StrongDM's AI team build serious software without even looking at the code."** [simonwillison.net/2026/Feb/7/software-factory/](https://simonwillison.net/2026/Feb/7/software-factory/), February 2026 — Detailed first-person account of visiting StrongDM's factory team.
+<a id="ref-7"></a>[7] **Simon Willison, "How StrongDM's AI team build serious software without even looking at the code."** [simonwillison.net/2026/Feb/7/software-factory/](https://simonwillison.net/2026/Feb/7/software-factory/), February 2026 — Detailed first-person account of visiting StrongDM's factory team.
 
-<a id="ref-8"></a>[[8]]{#ref-8} **Cem Kaner, "An Introduction to Scenario Testing."** 2003 — The foundational work on scenario-based testing that inspired StrongDM's holdout approach.
+<a id="ref-8"></a>[8] **Cem Kaner, "An Introduction to Scenario Testing."** 2003 — The foundational work on scenario-based testing that inspired StrongDM's holdout approach.
 
-<a id="ref-9"></a>[[9]]{#ref-9} **StrongDM Attractor NLSpec.** [github.com/strongdm/attractor](https://github.com/strongdm/attractor) — The open specification for a non-interactive coding agent structured as a graph of phases.
+<a id="ref-9"></a>[9] **StrongDM Attractor NLSpec.** [github.com/strongdm/attractor](https://github.com/strongdm/attractor) — The open specification for a non-interactive coding agent structured as a graph of phases.
 
-<a id="ref-10"></a>[[10]]{#ref-10} **Stack Overflow Blog, "How observability-driven development creates elite performers."** [stackoverflow.blog/2022/10/12/how-observability-driven-development-creates-elite-performers](https://stackoverflow.blog/2022/10/12/how-observability-driven-development-creates-elite-performers/) — Process capability framework connecting observability to specification limits.
+<a id="ref-10"></a>[10] **Stack Overflow Blog, "How observability-driven development creates elite performers."** [stackoverflow.blog/2022/10/12/how-observability-driven-development-creates-elite-performers](https://stackoverflow.blog/2022/10/12/how-observability-driven-development-creates-elite-performers/) — Process capability framework connecting observability to specification limits.
 
-<a id="ref-11"></a>[[11]]{#ref-11} **BMAD Method.** [github.com/bmad-code-org/BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD) — Agile AI-driven development framework with specialized agent personas and scale-adaptive planning.
+<a id="ref-11"></a>[11] **BMAD Method.** [github.com/bmad-code-org/BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD) — Agile AI-driven development framework with specialized agent personas and scale-adaptive planning.
 
-<a id="ref-12"></a>[[12]]{#ref-12} **Anthropic, "How we built our multi-agent research system."** [anthropic.com/engineering/multi-agent-research-system](https://www.anthropic.com/engineering/multi-agent-research-system) — Production architecture for orchestrator-worker multi-agent systems.
+<a id="ref-12"></a>[12] **Anthropic, "How we built our multi-agent research system."** [anthropic.com/engineering/multi-agent-research-system](https://www.anthropic.com/engineering/multi-agent-research-system) — Production architecture for orchestrator-worker multi-agent systems.
 
-<a id="ref-13"></a>[[13]]{#ref-13} **Kilroy (forked).** [github.com/thewoolleyman/kilroy](https://github.com/thewoolleyman/kilroy) — A fork of Kilroy (a Go implementation of the Attractor pattern) with bug fixes applied. PRs for these fixes have been submitted upstream. Kilroy was selected for its relative feature completeness among Attractor implementations and the accessibility of Go for patching and evolution.
+<a id="ref-13"></a>[13] **Kilroy (forked).** [github.com/thewoolleyman/kilroy](https://github.com/thewoolleyman/kilroy) — A fork of Kilroy (a Go implementation of the Attractor pattern) with bug fixes applied. PRs for these fixes have been submitted upstream. Kilroy was selected for its relative feature completeness among Attractor implementations and the accessibility of Go for patching and evolution.
 
-<a id="ref-14"></a>[[14]]{#ref-14} **Stanford Law School CodeX, "Built by Agents, Tested by Agents, Trusted by Whom?"** [law.stanford.edu/2026/02/08/built-by-agents-tested-by-agents-trusted-by-whom](https://law.stanford.edu/2026/02/08/built-by-agents-tested-by-agents-trusted-by-whom/), February 2026 — Legal and accountability analysis of factory-produced software.
+<a id="ref-14"></a>[14] **Stanford Law School CodeX, "Built by Agents, Tested by Agents, Trusted by Whom?"** [law.stanford.edu/2026/02/08/built-by-agents-tested-by-agents-trusted-by-whom](https://law.stanford.edu/2026/02/08/built-by-agents-tested-by-agents-trusted-by-whom/), February 2026 — Legal and accountability analysis of factory-produced software.
 
-<a id="ref-15"></a>[[15]]{#ref-15} **SPARC Methodology / claude-flow.** [github.com/ruvnet/claude-flow](https://github.com/ruvnet/claude-flow) — Multi-agent orchestration platform with Specification -> Pseudocode -> Architecture -> Refinement -> Completion phased development.
+<a id="ref-15"></a>[15] **SPARC Methodology / claude-flow.** [github.com/ruvnet/claude-flow](https://github.com/ruvnet/claude-flow) — Multi-agent orchestration platform with Specification -> Pseudocode -> Architecture -> Refinement -> Completion phased development.
 
-<a id="ref-16"></a>[[16]]{#ref-16} **Anthropic, "2026 Agentic Coding Trends Report."** [resources.anthropic.com/hubfs/2026 Agentic Coding Trends Report.pdf](https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf) — Industry data on AI-assisted development adoption and multi-agent coordination patterns.
+<a id="ref-16"></a>[16] **Anthropic, "2026 Agentic Coding Trends Report."** [resources.anthropic.com/hubfs/2026 Agentic Coding Trends Report.pdf](https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf) — Industry data on AI-assisted development adoption and multi-agent coordination patterns.
 
-<a id="ref-17"></a>[[17]]{#ref-17} **Martin Fowler / ThoughtWorks, "Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl."** [martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html) — Critical comparison of SDD tools with honest assessment of limitations.
+<a id="ref-17"></a>[17] **Martin Fowler / ThoughtWorks, "Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl."** [martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html) — Critical comparison of SDD tools with honest assessment of limitations.
 
 ---
 
