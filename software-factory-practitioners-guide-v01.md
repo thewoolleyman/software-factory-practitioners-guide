@@ -38,7 +38,7 @@ This guide describes what _can_ be possible, and the direction software developm
 
 It is based on my preliminary experience and explorations, as one practitioner who is still early in the journey of implementing and using these approaches. I am attempting to share what I have learned so far for the benefit of others, as we all navigate this era of rapid change and disruption.
 
-Accordingly, this guide is has a version designation. We are all on a learning journey together, to understand how the ideas described in this guide can and should work in practice.
+Accordingly, this guide has a version designation. We are all on a learning journey together, to understand how the ideas described in this guide can and should work in practice.
 
 ---
 

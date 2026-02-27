@@ -2,4 +2,4 @@
 
 A practitioners' guide on "Software Factories"
 
-See the [practitioners' guide](software-factory-practitioners-guide.md).
+See the [practitioners' guide](software-factory-practitioners-guide-v01.md).
