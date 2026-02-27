@@ -52,11 +52,11 @@ Sections 13 (Out of Scope) and 14 (Open Questions) list many large, critical bar
 
 StrongDM has demonstrated that this approach works at a startup with a greenfield codebase and no customers yet. Other small and mid-size companies are beginning to explore similar approaches. But as of this writing, no large enterprise has publicly shared an implementation of factory-pattern development at scale.
 
-This guide describes what _can_ be possible, and the direction software development is headed.
+This guide describes what is becoming possible, and the direction software development is headed.
 
-It is based on my preliminary experience and explorations, as one practitioner who is still early in the journey of implementing and using these approaches. I am attempting to share what I have learned so far for the benefit of others, as we all navigate this era of rapid change and disruption.
+It is based on my preliminary experience and explorations, as one practitioner who is still early in the journey of implementing and using these approaches. I'm sharing what I have learned so far for the benefit of others.
 
-Accordingly, this guide has a version designation. We are all on a learning journey together, to understand how the ideas described in this guide can and should work in practice.
+This guide has a version designation, and will evolve as the community's collective understanding deepens. We are all on a learning journey together, to understand how the ideas described in this guide can and should work in practice.
 
 ---
 
