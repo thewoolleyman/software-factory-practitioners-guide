@@ -66,7 +66,7 @@
 - [14. Open Questions](#14-open-questions)
   - [Specification Completeness and Validation](#specification-completeness-and-validation)
   - [Production Signals and Specification Evolution](#production-signals-and-specification-evolution)
-  - [Scaling to Complex Services](#scaling-to-complex-services)
+  - [Scaling and Complexity](#scaling-and-complexity)
   - [Enterprise Integration and Auditability](#enterprise-integration-and-auditability)
   - [Generated Code as Artifact](#generated-code-as-artifact)
 - [15. Closing Perspective](#15-closing-perspective)
@@ -111,7 +111,7 @@ The repository structure that separates human-authored specification from machin
 
 ### Reality Check: This Is an Aspirational Guide
 
-Sections 13 (Out of Scope) and 14 (Open Questions) list many large, critical barriers to implementing these patterns at scale — in an enterprise with established SDLC processes, large customers with SLAs, and significant legal and contractual commitments.
+Sections [13](#13-out-of-scope) and [14](#14-open-questions) list many large, critical barriers to implementing these patterns at scale — in an enterprise with established SDLC processes, large customers with SLAs, and significant legal and contractual commitments.
 
 StrongDM has demonstrated that this approach works at a startup with a greenfield codebase and no customers yet. Other small and mid-size companies are beginning to explore similar approaches. But as of this writing, no large enterprise has publicly shared an implementation of factory-pattern development at scale.
 
@@ -552,17 +552,13 @@ The YAML DSL and support skills may eventually be released as open source, likel
 ## 13. Out of Scope
 This guide focuses on the factory mechanics: turning human intent into working, deployed software for a single service. Several important concerns are acknowledged here as real, critical, and required for enterprise adoption — but separate from the core factory pattern.
 
-**Governance and auditability.** Who approves specification changes? What audit trail is required for factory-produced code? How do you satisfy SOC 2, HIPAA, or other compliance frameworks when no human reviews the code? The Stanford Law School's analysis [[14](#ref-14)], published two days after StrongDM's announcement, frames this sharply: "When a customer asks 'how was this software built?' the truthful answer is: 'Coding agents wrote it. Other agents tested it against replicas of your services.'" Existing software liability frameworks assume human involvement in code production. Factory-built software challenges that assumption. This guide does not address how to navigate it.
+**Governance, auditability, and compliance.** Who approves specification changes? What audit trail is required for factory-produced code? How do you satisfy SOC 2, HIPAA, or other compliance frameworks when no human reviews the code? The Stanford Law School's analysis [[14](#ref-14)], published two days after StrongDM's announcement, frames this sharply: "When a customer asks 'how was this software built?' the truthful answer is: 'Coding agents wrote it. Other agents tested it against replicas of your services.'" Existing software liability frameworks assume human involvement in code production. Factory-built software challenges that assumption. This guide does not address how to navigate it.
 
 **Agent security and scope.** Factory agents operate with access to source code, build systems, and potentially production infrastructure. What permissions should they have? How do you prevent a misbehaving agent from exfiltrating secrets, corrupting data, or deploying a bad build? Agent sandboxing, credential scoping, and blast radius limitation are critical. StrongDM ID's path-scoped sharing model is one approach, but agent security architecture deserves its own treatment.
-
-**SOA boundary coordination at scale.** As discussed in [Section 9](#9-soa-boundary-coordination), propagating contract changes across multiple factory-built services is unsolved. Organizations with dozens or hundreds of services need governance and automation beyond this guide's single-service scope.
 
 **Organizational transformation.** Adopting the factory pattern changes what it means to be a software engineer. The skill profile shifts from code production to specification authoring, scenario design, and system thinking. The Stanford Law analysis notes: "The skill of reading and writing code, the bedrock of software engineering for seventy years, becomes unnecessary" in a full dark factory. How organizations manage this transition — retraining, role redefinition, hiring, career ladders — is a significant challenge this guide does not address.
 
 **Cost management.** StrongDM's $1,000/day benchmark is aggressive. Not every organization can or should operate at that spend level. Optimizing token costs, choosing between expensive reasoning models and cheaper fast models, and projecting factory operating costs are left to the reader.
-
-**Monoliths/Monorepos.** These present fundamentally different challenges. A well-structured monolith is excellent for _humans_ managing context without distributed-system complexity — all code in one place, indexable and navigable in an IDE. With agentic engineering, the constraints are different. Agents have no pre-existing codebase knowledge outside what they are given. Context can be stored and managed externally, but even the largest models of today only have roughly a million tokens of context. That is infinitesimally small compared to the domain knowledge a human expert carries. These patterns are currently far more tractable in smaller, loosely-coupled, highly-cohesive service repos. Applying factory patterns to monoliths is an open problem this guide does not attempt to address.
 
 ---
 
@@ -581,9 +577,13 @@ The factory pattern is new enough that fundamental questions remain open. These 
 
 **How do production signals become specification amendments?** [Section 6](#6-production-observability-and-specification-evolution) sketched three signal categories and a triage layer, but no existing system implements this end-to-end. The gap between "SRE detects anomaly" and "specification engineer amends intent" is bridged by human judgment. Whether and how that gap can be narrowed through automation is the most important open research question for factory-pattern systems.
 
-### Scaling to Complex Services
+### Scaling and Complexity
 
 **Can factory patterns work for large, complex services?** StrongDM's published examples involve a three-person team building services over a few months. How the pattern scales to services with thousands of behavioral paths, deep dependency chains, and years of accumulated domain complexity is unproven. The specification engineering challenge alone — capturing all that complexity in NLSpec — may prove to be a bottleneck that resists automation.
+
+**How does SOA boundary coordination scale?** As discussed in [Section 9](#9-soa-boundary-coordination), propagating contract changes across multiple factory-built services is unsolved. Organizations with dozens or hundreds of services need governance and automation beyond this guide's single-service scope.
+
+**Can factory patterns apply to monoliths and monorepos?** These present fundamentally different challenges. A well-structured monolith is excellent for _humans_ managing context without distributed-system complexity — all code in one place, indexable and navigable in an IDE. With agentic engineering, the constraints are different. Agents have no pre-existing codebase knowledge outside what they are given. Context can be stored and managed externally, but even the largest models of today only have roughly a million tokens of context. That is infinitesimally small compared to the domain knowledge a human expert carries. These patterns are currently far more tractable in smaller, loosely-coupled, highly-cohesive service repos.
 
 ### Enterprise Integration and Auditability
 
@@ -612,7 +612,7 @@ Everything in this guide is a snapshot of a field changing at extraordinary pace
 
 Kilroy was chosen for the practical work behind this guide because it was relatively complete and easy to patch when it wasn't. It does not have to be used. The Attractor itself is a specification — an NLSpec published on GitHub describing what a non-interactive coding agent should do, not how any particular implementation must do it. Anyone can implement their own factory orchestration from that specification, adapt it, or build something better. The specification is the contribution; the implementation is replaceable. Fittingly, that is the same principle the factory pattern applies to software itself.
 
-The out-of-scope items in [Section 13](#13-out-of-scope) — governance, agent security, cross-service coordination, organizational transformation, cost management — are not minor footnotes. They are hard problems that will determine whether the factory pattern moves from early-adopter experimentation to mainstream enterprise practice. The open questions in [Section 14](#14-open-questions) are equally real. This guide does not pretend to have answers. It offers a framework for thinking about them, grounded in the published experience of teams that have built real software this way.
+The out-of-scope items in [Section 13](#13-out-of-scope) — governance, agent security, organizational transformation, cost management — and the open questions in [Section 14](#14-open-questions) are not minor footnotes. They are hard problems that will determine whether the factory pattern moves from early-adopter experimentation to mainstream enterprise practice. This guide does not pretend to have answers. It offers a framework for thinking about them, grounded in the published experience of teams that have built real software this way.
 
 The deeper point is not about any particular tool or technique. The trajectory of software development is moving toward specification-driven, agent-executed production. The economics are compelling: if a specification can drive agents to produce correct, validated software faster and cheaper than human implementation, the industry will adopt it — unevenly, reluctantly in some quarters, but inevitably. The skill that matters is not mastering today's toolchain. It is learning to think in specifications, to express intent precisely enough that machines can act on it, and to design validation systems rigorous enough to trust the output. Those skills transfer across whatever tools come next.
 
