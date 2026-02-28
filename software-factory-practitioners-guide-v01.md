@@ -117,7 +117,7 @@ StrongDM has demonstrated that this approach works at a startup with a greenfiel
 
 This guide describes what is becoming possible, and the direction software development is headed.
 
-### Reality Check 2: This Is Hard
+### Reality Check 2: This Is New and Hard
 
 I want to be very transparent: **_I personally have not yet produced any usable software with Software Factory approach, even of alpha quality_**. I've only been doing hands-on experimentation with this approach for a couple of weeks.
 
@@ -127,9 +127,11 @@ And the main thing I've discovered is that it is _HARD_:
 - To create the pipeline itself, with all of the quality gates you would expect for a development and CI environment, but turned up to 11, and able to run in an automated feedback loop.
 - To define validation harnesses and holdout scenarios with the rigor to enforce an acceptable level of quality. 
 
+So, my initial experimentation has mainly shown at you cannot attempting to take "shortcuts" by relying too much on AI to generate the specification. You have to be deeply involved in creating the specification, to understand it deeply, and to fully understand how it drives the factory operation. This takes a lot of time and experience. 
+
 But I wanted to produce this guide as a starting milepost, to share what I've learned, and how I'm approaching it.
 
-It is based on my preliminary experience and explorations, as one practitioner who is still early in the journey of implementing and using these approaches. I'm want to share what I have learned so far for the benefit of others.
+It is based on my preliminary experience and explorations, as one practitioner who is still early in the journey of implementing and using these approaches. I want to share what I have learned so far for the benefit of others.
 
 Thus, this guide has a version designation. It will evolve as the community's collective understanding deepens. We are all on a learning journey together, to understand how the ideas described in this guide can and should work in practice.
 
