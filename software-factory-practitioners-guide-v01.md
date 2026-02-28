@@ -668,6 +668,8 @@ The deeper point is not about any particular tool or technique. The trajectory o
 
 <a id="ref-18"></a>[18] **Jujutsu (jj).** [jj-vcs.dev](https://www.jj-vcs.dev/latest/) — A Git-compatible version control system with first-class conflicts, operation-log undo, automatic rebasing, and working-copy-as-commit semantics. [github.com/jj-vcs/jj](https://github.com/jj-vcs/jj)
 
+<a id="ref-19"></a>[19] **Robert M. Pirsig, _Zen and the Art of Motorcycle Maintenance_.** [en.wikipedia.org/wiki/Zen_and_the_Art_of_Motorcycle_Maintenance](https://en.wikipedia.org/wiki/Zen_and_the_Art_of_Motorcycle_Maintenance) — A philosophical exploration of the concept of "quality" and the tension between romantic and classical approaches to understanding.
+
 ---
 
 ## Appendix: A Personal Note
@@ -678,9 +680,11 @@ I pride myself on being a disciplined craftsperson. One who finds joy and passio
 
 **In the last 2-3 months since I started agentic coding, I have committed roughly 150,000 lines of code. I wrote almost none of it by hand, probably less than 500 lines.** This is across multiple working, usable projects. Mostly personal greenfield projects, and also some internal bug/feature work at my company. It was mostly Level 3-4 work in Shapiro's taxonomy [[2](#ref-2)]. 
 
-And in full transparency, I haven't yet produced any usable work from a fully-Level-5 "Dark Software Factory" approach. That's mainly because I've only been trying these approaches for a week or so, and the run cycles are _long_ (hours), so most of the time was burned just working on getting the factory running.
+And as noted in the first sections of this paper, I want to be fully transparent: **_I haven't yet produced any usable work from a fully-Level-5 "Dark Software Factory" approach, in the week or two I have been experimenting_**. I have learned that to be successful with this approach, you must learn a new and very difficult skill: writing specifications with a level of rigor and precision that allows a factory to produce usable, quality code.
 
-It's outside the scope of this paper to discuss the _quality_ of the code I directed AI to produce. Everyone will have a different perspective. What I can say is that it is undoubtedly of a _different_ quality than the code I have written by hand over the last 40 years. But is it better? Worse? Both, depending on how you look at it? Yes, all of the above. Again, highly subjective.
+It's outside the scope of this paper to discuss the _quality_ of the code I directed AI to produce with my Level 3-4 work, or that a Level 5 fully-automated factory will produce, even when it is provided the best specifications and validations. Everyone will have a different perspective on quality [[19](#ref-19)].
+
+What I _can_ say is that the working Level 3-4 code I have produced is undoubtedly of a _different_ quality than the code I have written by hand over the last 40 years. But is it better? Worse? Both, depending on how you look at it? Yes, all of the above. Again, highly subjective.
 
 What I do know is this: software development will never be the same. I'm more convinced of that than anything in my last 40 years of doing it. Will it change overnight? No, of course not. Will it change almost everywhere, eventually? Yes.
 
