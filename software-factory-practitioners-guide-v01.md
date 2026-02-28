@@ -16,7 +16,7 @@
 
 - [Executive Summary](#executive-summary)
 - [1. Overview and Scope](#1-overview-and-scope)
-  - [Reality Check: This Is an Aspirational Guide](#reality-check-this-is-an-aspirational-guide)
+  - [Reality Check: This is an Aspirational Guide](#reality-check-this-is-an-aspirational-guide)
 - [2. Repository Layout](#2-repository-layout)
   - [Example Layout](#example-layout)
   - [Adapting the Layout](#adapting-the-layout)
@@ -88,7 +88,7 @@ The software factory pattern represents a fundamental shift in how software is b
 
 **What remains unsolved.** Production observability feeding back into specification evolution is the largest open problem — no existing system fully closes this loop. Enterprise governance [[14](#ref-14)], code provenance, cross-service contract propagation, organizational transformation, and cost management are all critical concerns acknowledged but intentionally scoped out.
 
-**This is an aspirational guide.** StrongDM [[1](#ref-1)] has demonstrated the pattern at a startup with a greenfield codebase. No large enterprise has publicly implemented it at scale. The guide describes what is becoming possible, grounded in published experience from StrongDM, 8090 [[3](#ref-3)], Superpowers [[4](#ref-4)], GitHub's Spec Kit [[5](#ref-5)], and the author's own factory experiments using a forked implementation of Kilroy [[13](#ref-13)] (a Go-based Attractor implementation). It is versioned because we are all still learning.
+**This is an aspirational guide.** StrongDM [[1](#ref-1)] has demonstrated the pattern at a startup with a greenfield codebase. No large enterprise has publicly implemented it at scale. **_The author has not yet produced usable software with this approach — early experiments have mainly revealed how hard it is to define specifications with machine-executable rigor_**. The guide describes what is becoming possible, grounded in published experience from StrongDM, 8090 [[3](#ref-3)], Superpowers [[4](#ref-4)], GitHub's Spec Kit [[5](#ref-5)], and the author's own factory experiments using a forked implementation of Kilroy [[13](#ref-13)] (a Go-based Attractor implementation). It is versioned because we are all still learning.
 
 ---
 
@@ -109,31 +109,19 @@ The reader's organization already operates an SOA with defined service boundarie
 
 The repository structure that separates human-authored specification from machine-generated implementation. The specification layer — how to express intent, contracts, and constraints in a form agents can execute against. Scenarios as holdout validation — the mechanism that prevents agents from reward-hacking their own tests. The factory development loop — how the Attractor pattern uses DOT-based phase graphs to orchestrate convergence. Production observability and its largely unsolved relationship to specification evolution. The interactive/non-interactive boundary — when human collaboration gives way to autonomous execution. Patterns for evolving specifications over time, drawn from StrongDM, 8090 [[3](#ref-3)], Superpowers [[4](#ref-4)], and GitHub's Spec Kit [[5](#ref-5)].
 
-### Reality Check 1: This Is an Aspirational Guide
+### Reality Check: This is an Aspirational Guide
 
-Sections [13](#13-out-of-scope) and [14](#14-open-questions) list many large, critical barriers to implementing these patterns at scale — in an enterprise with established SDLC processes, large customers with SLAs, and significant legal and contractual commitments.
+This guide describes what is becoming possible, not what most people are doing right now. StrongDM has demonstrated the approach at a startup with a greenfield codebase and no customers yet. Other small and mid-size companies are beginning to explore similar patterns. But as of this writing, to the author's knowledge, no large enterprise has publicly shared an implementation of factory-pattern development at scale. Sections [13](#13-out-of-scope) and [14](#14-open-questions) list many large, critical barriers — established SDLC processes, customers with SLAs, and significant legal and contractual commitments among them.
 
-StrongDM has demonstrated that this approach works at a startup with a greenfield codebase and no customers yet. Other small and mid-size companies are beginning to explore similar approaches. But as of this writing, no large enterprise has publicly shared an implementation of factory-pattern development at scale.
+The author's own early factory experiments have confirmed that this is genuinely _HARD_. To be transparent: **_I have not yet produced usable software with the Software Factory approach, even of alpha quality._** After a week or two of hands-on experimentation, the main lessons have been about what _doesn't_ work — specifically, that you cannot take shortcuts by relying too heavily on AI to generate the specification. The difficulties are real:
 
-This guide describes what is becoming possible, and the direction software development is headed.
+- Defining specifications with machine-executable rigor, when you can't rely on an experienced domain-aware human to "know what you really mean."
+- Creating the pipeline itself, with all of the quality gates you would expect for a development and CI environment, but turned up to 11 and able to run in an automated feedback loop.
+- Defining validation harnesses and holdout scenarios with the rigor to enforce an acceptable level of quality.
 
-### Reality Check 2: This Is New and Hard
+You have to be deeply involved in creating the specification, understand it thoroughly, and fully grasp how it drives factory operation. This takes significant time and experience.
 
-I want to be very transparent: **_I personally have not yet produced any usable software with Software Factory approach, even of alpha quality_**. I've only been doing hands-on experimentation with this approach for a couple of weeks.
-
-And the main thing I've discovered is that it is _HARD_:
-
-- To define specifications with this sort of machine-executable rigor, when you can't rely on an experienced domain-aware human to "know what you really mean".
-- To create the pipeline itself, with all of the quality gates you would expect for a development and CI environment, but turned up to 11, and able to run in an automated feedback loop.
-- To define validation harnesses and holdout scenarios with the rigor to enforce an acceptable level of quality. 
-
-So, my initial experimentation has mainly shown at you cannot attempting to take "shortcuts" by relying too much on AI to generate the specification. You have to be deeply involved in creating the specification, to understand it deeply, and to fully understand how it drives the factory operation. This takes a lot of time and experience. 
-
-But I wanted to produce this guide as a starting milepost, to share what I've learned, and how I'm approaching it.
-
-It is based on my preliminary experience and explorations, as one practitioner who is still early in the journey of implementing and using these approaches. I want to share what I have learned so far for the benefit of others.
-
-Thus, this guide has a version designation. It will evolve as the community's collective understanding deepens. We are all on a learning journey together, to understand how the ideas described in this guide can and should work in practice.
+This guide is a starting milepost — one practitioner's attempt to share what he has learned early in the journey, for the benefit of others. It carries a version designation because it will evolve as the community's collective understanding deepens. We are all learning together how these ideas can and should work in practice.
 
 ---
 
