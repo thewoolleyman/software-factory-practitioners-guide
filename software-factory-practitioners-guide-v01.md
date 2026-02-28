@@ -239,6 +239,18 @@ The emerging answer involves separate agent sets. Spec-refinement agents (operat
 
 The concrete mechanics of this separation are still being worked out. StrongDM has demonstrated it works in practice with their team of three. How it scales to larger organizations with more complex services remains an active area of exploration.
 
+### The Scenario Execution Problem
+
+You will likely be tempted to have AI assist with the process of validating the holdout scenarios. For example, automatically driving a Playwright MCP server to validate the scenarios against a running version of the web app.
+
+However, if you allow AI to do this in the same repo which contains your factory-generated code, it is possible that it will try to go ahead and _fix_ those problems.
+
+You can avoid or prevent this, but it will take careful design. For example, running the validation process in a separate repo or clone, which does not have visibility into the codebase, or otherwise introducing deterministic, non-LLM controls which prevent modification of the generated code.
+
+You also may be tempted to automate the feedback loop from this validation, to automatically update your specification with the failures.
+
+This is also an area in which you must be careful, because this is a path by which AI slop may be introduced into your critical and carefully curated specifications.
+
 ---
 
 ## 5. The Factory Development Loop
