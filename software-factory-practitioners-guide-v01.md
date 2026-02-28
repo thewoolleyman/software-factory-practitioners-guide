@@ -93,6 +93,7 @@ The software factory pattern represents a fundamental shift in how software is b
 ---
 
 ## 1. Overview and Scope
+
 You have a greenfield service to build within an existing enterprise service-oriented architecture, and you want to build it using the software factory pattern — where human-authored specifications drive coding agents that produce, test, and converge working software without human code review.
 
 The factory pattern has moved from theoretical to operational. StrongDM's AI team [[1](#ref-1)] published the first detailed public account of a production software factory in February 2026. A three-person team produced security infrastructure — access management software controlling permissions across Okta, Jira, Slack, and Google Workspace — under two foundational rules: no human writes code, and no human reviews code. The humans design specifications, curate validation scenarios, and monitor satisfaction scores. The agents do everything else.
@@ -169,6 +170,7 @@ What the layout does express is the fundamental divide at the heart of the facto
 ---
 
 ## 3. The Specification Layer
+
 The specification layer is the factory's primary input and the human's primary artifact. Getting specifications right is where the hard intellectual work lives. As GitHub's Spec Kit documentation puts it: "The lingua franca of development moves to a higher level, and code is the last-mile approach."
 
 ### Intent Specifications (NLSpec)
@@ -198,6 +200,7 @@ A well-written constraint is measurable. "The service should be fast" is not a c
 ---
 
 ## 4. Scenarios as Holdout Validation
+
 The scenario holdout mechanism is the most important innovation in the factory pattern, and it emerged from a painful discovery. When StrongDM's team began building software with coding agents, they hit the classic reward-hacking problem: agents tasked with making tests pass would write `return true`. Perfectly rational strategy for passing a narrowly written test. Produces useless software.
 
 Traditional testing approaches — unit tests, integration tests, end-to-end tests — all share a vulnerability when agents write both the implementation and the tests: the agent can optimize for the test rather than for the intended behavior. This is not hypothetical. It happened repeatedly in StrongDM's early experiments. Tests that lived inside the codebase, visible to the coding agents, became targets for optimization rather than genuine quality signals.
@@ -239,6 +242,7 @@ The concrete mechanics of this separation are still being worked out. StrongDM h
 ---
 
 ## 5. The Factory Development Loop
+
 The factory development loop is the core engine that transforms specifications into working software. At its heart is the Attractor pattern — a graph-structured pipeline that orchestrates coding agents through phases of implementation, testing, and refinement until the software converges on a state that satisfies all specifications and passes holdout validation.
 
 ### The Attractor Pattern
@@ -308,6 +312,7 @@ The satisfaction metric is computed by a separate validation agent (or agent set
 ---
 
 ## 6. Production Observability and Specification Evolution
+
 What happens after the factory produces software and that software runs in production? How do production signals flow back to influence specifications? This is the least-solved problem in the factory pattern, and we present it as frontier territory rather than settled practice.
 
 ### Three Categories of Production Signal
@@ -345,6 +350,7 @@ Signal Type C (satisfaction regression) requires instrumentation beyond traditio
 ---
 
 ## 7. The Interactive/Non-Interactive Boundary
+
 [Section 2](#2-repository-layout) introduced the shift work divide — the distinction between human-managed interactive work and autonomous factory execution — as the organizing principle behind the repository layout. This section examines that boundary in depth, because where exactly interactive collaboration ends and autonomous execution begins is the central unsolved problem in factory-pattern development. We do not have a definitive answer. What we offer is a landscape of approaches, a concrete framing from StrongDM, and honest identification of the gaps.
 
 ### StrongDM's Shift Work Pattern
@@ -400,6 +406,7 @@ None of these systems fully solves the interactive/non-interactive boundary. The
 ---
 
 ## 8. Evolving Specifications Over Time
+
 Specifications are living documents. As the service operates in production, encounters new usage patterns, and integrates with evolving SOA neighbors, the specifications must evolve.
 
 ### Specification Versioning
@@ -427,6 +434,7 @@ This cycle — observe, amend, rebuild, validate — is the heartbeat of an evol
 ---
 
 ## 9. SOA Boundary Coordination
+
 This guide focuses on building a single service. But that service exists within an SOA, and its contracts connect it to neighboring services.
 
 ### The Coordination Problem
@@ -446,6 +454,7 @@ The `spec/contracts/` directory captures contracts as they exist today. When ups
 ---
 
 ## 10. Applicability Beyond SOA
+
 While this guide targets services within an enterprise SOA, the factory pattern applies more broadly. The core mechanics — specification as primary artifact, holdout scenario validation, graph-structured agent orchestration, satisfaction-based convergence — are domain-independent.
 
 **Libraries and frameworks** can be factory-built by replacing API contracts with public interface specifications and using consumer codebases (or synthetic consumers) for validation. Holdout scenarios become usage examples the library must satisfy.
@@ -459,6 +468,7 @@ The common thread: humans specify intent and validation criteria, the factory pr
 ---
 
 ## 11. Toolchain Summary
+
 This section maps the abstract concepts to concrete tools. The landscape evolves rapidly; treat this as a snapshot of early 2026 rather than a permanent recommendation.
 
 ### Specification Authoring
@@ -552,6 +562,7 @@ The YAML DSL and support skills may eventually be released as open source, likel
 ---
 
 ## 13. Out of Scope
+
 This guide focuses on the factory mechanics: turning human intent into working, deployed software for a single service. Several important concerns are acknowledged here as real, critical, and required for enterprise adoption — but separate from the core factory pattern.
 
 **Governance, auditability, and compliance.** Who approves specification changes? What audit trail is required for factory-produced code? How do you satisfy SOC 2, HIPAA, or other compliance frameworks when no human reviews the code? The Stanford Law School's analysis [[14](#ref-14)], published two days after StrongDM's announcement, frames this sharply: "When a customer asks 'how was this software built?' the truthful answer is: 'Coding agents wrote it. Other agents tested it against replicas of your services.'" Existing software liability frameworks assume human involvement in code production. Factory-built software challenges that assumption. This guide does not address how to navigate it.
@@ -565,6 +576,7 @@ This guide focuses on the factory mechanics: turning human intent into working, 
 ---
 
 ## 14. Open Questions
+
 The factory pattern is new enough that fundamental questions remain open. These have been referenced inline and are consolidated here.
 
 ### Specification Completeness and Validation
