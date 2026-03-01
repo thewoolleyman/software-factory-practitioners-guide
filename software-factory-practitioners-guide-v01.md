@@ -127,6 +127,7 @@ This guide is a starting milepost — one practitioner's attempt to share what h
 ---
 
 ## 2. Repository Layout
+
 ### Example Layout
 
 The repository structure encodes a fundamental distinction: what humans manage (often with AI assistance) versus what machines produce autonomously. Everything under `spec/`, `holdout-scenarios/`, `factory/`, and `docs/` is human-managed — authored or curated by the context/intent engineer, possibly with agent assistance during interactive sessions. Everything under `src/` is machine-generated, version-controlled, but treated as opaque output whose correctness is verified exclusively through externally observable behavior.
@@ -514,6 +515,7 @@ The agentic TUI is the human's primary interface to the factory — the tool thr
 ---
 
 ## 12. Getting Started
+
 ### Start experimenting
 
 The best way to learn factory-pattern development is to try it. The concepts in this guide are easier to internalize once you have run a factory loop end-to-end, even on a trivial service. Start small — a single-endpoint service with a handful of scenarios — and let the experience shape your understanding of where specifications need precision, where holdout scenarios catch genuine issues, and where the factory diverges from intent in ways that reveal specification gaps. No prescribed sequence can substitute for hands-on calibration.
@@ -632,6 +634,7 @@ This matters because these external systems are not optional — they are where 
 ---
 
 ## 15. Closing Perspective
+
 ### What's next?
 
 Everything in this guide is a snapshot of a field changing at extraordinary pace. The tools, frameworks, and implementations referenced here represent what was available as of early 2026. Many will be superseded, forked, rewritten, or abandoned within months. New entrants will appear addressing the same goals with different architectures and tradeoffs. Normal for a domain this young.
@@ -644,8 +647,7 @@ The deeper point is not about any particular tool or technique. The trajectory o
 
 ---
 
-
--## References and Further Reading
+## References and Further Reading
 
 <a id="ref-1"></a>[1] **Dan Shapiro, "The Five Levels: from Spicy Autocomplete to the Dark Factory."** [danshapiro.com/blog/2026/01/the-five-levels-from-spicy-autocomplete-to-the-software-factory](https://www.danshapiro.com/blog/2026/01/the-five-levels-from-spicy-autocomplete-to-the-software-factory/), January 2026 — The five-level taxonomy of AI-assisted programming.
 
@@ -688,7 +690,8 @@ The deeper point is not about any particular tool or technique. The trajectory o
 <a id="ref-20"></a>[20] **Jujutsu (jj).** [jj-vcs.dev](https://www.jj-vcs.dev/latest/) — A Git-compatible version control system with first-class conflicts, operation-log undo, automatic rebasing, and working-copy-as-commit semantics. [github.com/jj-vcs/jj](https://github.com/jj-vcs/jj)
 
 <a id="ref-21"></a>[21] **Robert M. Pirsig, _Zen and the Art of Motorcycle Maintenance_.** [en.wikipedia.org/wiki/Zen_and_the_Art_of_Motorcycle_Maintenance](https://en.wikipedia.org/wiki/Zen_and_the_Art_of_Motorcycle_Maintenance) — A philosophical exploration of the concept of "quality" and the tension between romantic and classical approaches to understanding.
---
+
+---
 
 ## Appendix: A Personal Note
 
