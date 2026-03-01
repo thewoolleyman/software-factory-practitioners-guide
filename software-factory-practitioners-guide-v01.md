@@ -4,7 +4,7 @@
 
 **Version: 1**
 
-[https://www.thewoolleyweb.com/software-factory-practitioners-guide-v01.pdf](https://www.thewoolleyweb.com/software-factory-practitioners-guide-v01.pdf)
+[https://thewoolleyweb.com/software-factory-practitioners-guide-v01.pdf](https://thewoolleyweb.com/software-factory-practitioners-guide-v01.pdf)
 
 [https://github.com/thewoolleyman/software-factory-practitioners-guide/blob/main/software-factory-practitioners-guide-v01.md](https://github.com/thewoolleyman/software-factory-practitioners-guide/blob/main/software-factory-practitioners-guide-v01.md)
 
