@@ -383,7 +383,7 @@ The boundary between these shifts is the critical question: when is a specificat
 
 No formal criterion exists. Completeness is a judgment call informed by experience. But several heuristics help.
 
-**The new-hire test.** GitHub's Spec Kit and Factory [[13](#ref-13)] both suggest: "Would a capable new hire, given this specification and no other context, implement correctly without interrupting you more than once?" If no, the specification has gaps that will cause the factory to make wrong assumptions.
+**The new-hire test.** GitHub's Spec Kit [[5](#ref-5)] and Factory [[13](#ref-13)] both suggest: "Would a capable new hire, given this specification and no other context, implement correctly without interrupting you more than once?" If no, the specification has gaps that will cause the factory to make wrong assumptions.
 
 **Scenario coverage.** If you can write holdout scenarios for every behavioral narrative in the intent specification and every edge case in the contracts, the specification is likely complete enough. If you find yourself unable to write a scenario because you don't know what the correct behavior should be — that's a specification gap that needs interactive resolution.
 
