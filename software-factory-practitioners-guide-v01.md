@@ -522,7 +522,7 @@ The best way to learn factory-pattern development is to try it. The concepts in 
 
 ### Let your agents read this guide
 
-There is a markdown version of this paper available at [https://github.com/thewoolleyman/software-factory-practitioners-guide](https://github.com/thewoolleyman/software-factory-practitioners-guide). You can download it and feed it to your agents as context for them to understand how software factories work. It is licensed under the [UNLICENSE](https://unlicense.org/). You may modify, update, or use it in any way that is useful to you and your agents.
+There is a markdown version of this paper available at [https://github.com/thewoolleyman/software-factory-practitioners-guide](https://github.com/thewoolleyman/software-factory-practitioners-guide). You can download it and feed parts of it to your agents as context for them to understand how software factories work. It is licensed under the [UNLICENSE](https://unlicense.org/). You may modify, update, or use it in any way that is useful to you and your agents.
 
 ### Notes on usage of Kilroy
 
