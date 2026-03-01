@@ -2,9 +2,9 @@
 
 **A reference for implementing factory-pattern development within an enterprise SOA.**
 
-**Version 1** - [PDF](https://thewoolleyweb.com/software-factory-practitioners-guide-v01.pdf) - [Markdown](https://github.com/thewoolleyman/software-factory-practitioners-guide/blob/main/software-factory-practitioners-guide-v01.md)
+**Version 1**: [PDF](https://thewoolleyweb.com/software-factory-practitioners-guide-v01.pdf) - [Markdown](https://github.com/thewoolleyman/software-factory-practitioners-guide/blob/main/software-factory-practitioners-guide-v01.md) - [HTML](https://thewoolleyweb.com/software-factory-practitioners-guide-v01.html)
 
-**All Versions**: [https://thewoolleyweb.com/software-factory-practitioners-guide](https://thewoolleyweb.com/software-factory-practitioners-guide)
+[**Latest Version**](https://thewoolleyweb.com/software-factory-practitioners-guide) - [**All Versions**](https://thewoolleyweb.com/software-factory-practitioners-guide-versions)
 
 **Chad Woolley, thewoolleyman@gmail.com, February 2026**
 
