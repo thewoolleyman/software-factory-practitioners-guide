@@ -98,7 +98,7 @@ You have a greenfield service to build within an existing enterprise service-ori
 
 The factory pattern has moved from theoretical to operational. StrongDM's AI team [[1](#ref-1)] published the first detailed public account of a production software factory in February 2026. A three-person team produced security infrastructure — access management software controlling permissions across Okta, Jira, Slack, and Google Workspace — under two foundational rules: no human writes code, and no human reviews code. The humans design specifications, curate validation scenarios, and monitor satisfaction scores. The agents do everything else.
 
-Dan Shapiro's five-level taxonomy of AI-assisted programming [[2](#ref-2)], published in January 2026, provides useful positioning. Most development teams today operate at Level 2 (pair programming with AI) or Level 3 (human as full-time code reviewer). Level 4 shifts the human role to engineering management — writing specs, crafting agent skills, reviewing plans, then stepping away while agents execute. Level 5, the "dark factory," removes human review entirely.
+Dan Shapiro's five-level taxonomy of AI-assisted programming [[2](#ref-2)], published in January 2026, provides useful positioning. Most development teams today operate at Level 2 (pair programming with AI) or Level 3 (human as full-time code reviewer). Level 4 shifts the human role to engineering management — writing specs, crafting agent skills, reviewing plans, then stepping away while agents execute. Level 5, the "dark factory," removes human review entirely. Industry data on agentic coding adoption [[18](#ref-18)] confirms this progression — most teams remain at Levels 2-3, with multi-agent coordination patterns accelerating the transition toward higher levels.
 
 This guide targets the Level 4-to-5 transition for a single service. It does not describe how an entire organization should restructure, nor does it prescribe governance, compliance, or audit frameworks. Those concerns matter enormously for enterprise adoption, but they are separable from the core mechanics of turning human intent into working, deployed software.
 
@@ -172,6 +172,8 @@ What the layout does express is the fundamental divide at the heart of the facto
 ## 3. The Specification Layer
 
 The specification layer is the factory's primary input and the human's primary artifact. Getting specifications right is where the hard intellectual work lives. As GitHub's Spec Kit documentation puts it: "The lingua franca of development moves to a higher level, and code is the last-mile approach."
+
+Böckeler's analysis of spec-driven development tooling [[19](#ref-19)] identifies three levels of increasing commitment to specification as the central artifact. **Spec-first**: a specification is written before implementation, then discarded once the task is complete. **Spec-anchored**: the specification persists after implementation, serving as a living reference for evolution and maintenance. **Spec-as-source**: the specification becomes the primary source file — humans edit only the spec, never the code. The factory pattern described in this guide is an implementation of spec-as-source: the `spec/` directory is the human's artifact, `src/` is generated output, and the factory mediates the transformation between them.
 
 ### Intent Specifications (NLSpec)
 
@@ -485,7 +487,7 @@ This section maps the abstract concepts to concrete tools. The landscape evolves
 
 ### Specification Authoring
 
-Specifications are markdown files authored in any text editor. For agent-assisted refinement during the interactive shift, any agentic TUI that supports interactive conversation will work — Claude Code, OpenCode, Cursor, and Copilot Workspace all support specification-first workflows. GitHub's Spec Kit provides scaffolding (constitution, specification, plan, and task templates) that can bootstrap the `spec/` directory structure. BMAD's planning agents provide a more opinionated interactive workflow for teams that prefer structured guidance during specification authoring.
+Specifications are markdown files authored in any text editor. For agent-assisted refinement during the interactive shift, any agentic TUI that supports interactive conversation will work — Claude Code, OpenCode, Cursor, and Copilot Workspace all support specification-first workflows. GitHub's Spec Kit provides scaffolding (constitution, specification, plan, and task templates) that can bootstrap the `spec/` directory structure. BMAD's planning agents provide a more opinionated interactive workflow for teams that prefer structured guidance during specification authoring. The SPARC methodology [[17](#ref-17)] takes a similar phased approach — Specification, Pseudocode, Architecture, Refinement, Completion — implemented as a multi-agent orchestration platform built on claude-flow.
 
 No third-party tooling is required. Direct prompts in your TUI of choice are sufficient — describe the specification, ask the agent to identify gaps, refine iteratively. For teams wanting more structure, custom skills can be built from scratch. A useful pattern: a Critique/Revise loop. A `critique` skill feeds the current specification to multiple LLMs and aggregates their critiques. A paired `revise` skill presents each critique to a revision agent, which either accepts the change or rejects it with a written rationale, recording outcomes in an acknowledgement file. Running this loop in a versioned way — committing each iteration — produces an auditable specification evolution history, capturing which changes originated from human judgment and which from LLM suggestion.
 
@@ -680,7 +682,7 @@ The deeper point is not about any particular tool or technique. The trajectory o
 
 <a id="ref-18"></a>[18] **Anthropic, "2026 Agentic Coding Trends Report."** [resources.anthropic.com/hubfs/2026 Agentic Coding Trends Report.pdf](https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf) — Industry data on AI-assisted development adoption and multi-agent coordination patterns.
 
-<a id="ref-19"></a>[19] **Martin Fowler / ThoughtWorks, "Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl."** [martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html) — Critical comparison of SDD tools with honest assessment of limitations.
+<a id="ref-19"></a>[19] **Birgitta Böckeler / ThoughtWorks, "Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl."** [martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html) — Critical comparison of SDD tools with honest assessment of limitations.
 
 <a id="ref-20"></a>[20] **Jujutsu (jj).** [jj-vcs.dev](https://www.jj-vcs.dev/latest/) — A Git-compatible version control system with first-class conflicts, operation-log undo, automatic rebasing, and working-copy-as-commit semantics. [github.com/jj-vcs/jj](https://github.com/jj-vcs/jj)
 
